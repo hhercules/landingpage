@@ -24,8 +24,7 @@
 
 PCF on GCP Reference Architecture Overview (*c0-gcp-base*):![c0-gcp-base v1.0.1](../static/gcp/images/PCF-GCP-RefArch-Overview/overview-arch.png)
 
-- [Pipeline Repo Link](https://github.com/c0-ops/gcp-concourse) : Customer0 Concourse Pipelines
-- [Running Pipeline Link](https://fly.customer0.net/teams/main/pipelines/c0-gcp-deploy-ert-base) : See the Running Customer0 Concourse Pipelines
+- [Pipeline Repo Link](https://github.com/pivotal-cf/gcp-concourse) : Customer0 Concourse Pipelines
 
 
 ###__PCF on GCP requires the following GCP Components__:
@@ -89,7 +88,7 @@ Best practice PCF on GCP deployments requires 2 "Service Accounts"
 		
 #####Networks
 
-Review Pipeline Network objects here: [C0 GCP Pipeline Terraform Network Objects](https://raw.githubusercontent.com/c0-ops/gcp-concourse/master/terraform/c0-gcp-base/2_networks.tf)
+Review Pipeline Network objects here: [C0 GCP Pipeline Terraform Network Objects](https://github.com/pivotal-cf/gcp-concourse/blob/master/terraform/networks.tf)
 
 GCP Network objects allow multiple subnets with multiple CIDRs , so a typical deployment of PCF will likely only ever require 1 GCP Network object as well as 1 or more of the following:
 
@@ -114,7 +113,7 @@ GCP Network objects allow multiple subnets with multiple CIDRs , so a typical de
 
 #####FireWall Rules
 
-Review Pipeline Rules here:[C0 GCP Pipeline Terraform FW Rules](https://raw.githubusercontent.com/c0-ops/gcp-concourse/master/terraform/c0-gcp-base/3_firewalls.tf)
+Review Pipeline Rules here:[C0 GCP Pipeline Terraform FW Rules](https://raw.githubusercontent.com/pivotal-cf/gcp-concourse/master/terraform/c0-gcp-base/3_firewalls.tf)
 
 ![rules_and_tags v1.0.0](../static/gcp/images/PCF-GCP-RefArch-Overview/firewall-rules.png)
 

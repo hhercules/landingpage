@@ -13,9 +13,8 @@ Validation Key Info
 
   ![](../static/azure/images/PCF-Azure-RefArch-Customer0/Overview.png)
 
-  - [Pipeline Repo Link](https://github.com/c0-ops/azure-concourse) : Customer[0] Concourse Pipelines
-  - [Pipeline ERT Repo Link](https://github.com/c0-ops/ert-concourse) : Customer[0] Concourse Pipelines
-  - [Running Pipeline Link](https://fly.customer0.io/teams/main/pipelines/azure-base-ci) : See the Running Customer[0] Concourse Pipelines
+  - [Pipeline Repo Link](https://github.com/pivotal-cf/azure-concourse) : Customer[0] Concourse Pipelines
+  - [Pipeline ERT Repo Link](https://github.com/pivotal-cf/ert-concourse) : Customer[0] Concourse Pipelines
   - [Customer0 slack channel](http://pivotal.slack.com/customer0)
 
 This model shows a single PCF deployment in a single Azure Resource Group. Azure does not provide resource that maps as a traditional PCF availability zone.  IaaS Availability is provided via _**Availability Sets**_.

@@ -40,7 +40,7 @@ Best practice PCF on AWS deployments requires 2 "Service Accounts"
 
 2. IAM Service Account -> "For OpsMan/BOSH"
 
-   - The service account will be automatically provisioned with restricted access only to PCF needed resources. [C0 AWS IAM ](https://github.com/c0-ops/aws-concourse/blob/master/terraform/c0-aws-base/iam.tf)
+   - The service account will be automatically provisioned with restricted access only to PCF needed resources. [C0 AWS IAM ](https://github.com/pivotal-cf/aws-concourse/blob/master/terraform/iam.tf)
 
 ##### Networks
 
@@ -50,7 +50,7 @@ Best practice PCF on AWS deployments requires 2 "Service Accounts"
 
 - **Subnets**
 
-  AWS Subnets: [C0 AWS Pipeline Terraform subnets](https://github.com/c0-ops/aws-concourse/blob/master/terraform/c0-aws-base/subnets.tf)
+  AWS Subnets: [C0 AWS Pipeline Terraform subnets](https://github.com/pivotal-cf/aws-concourse/blob/master/terraform/subnets.tf)
 
   1. 1 *"Infrastructure"* subnet <->  This network will host:
     - _["Bosh Director"]_
@@ -70,9 +70,9 @@ Best practice PCF on AWS deployments requires 2 "Service Accounts"
 
 	Routes are created by AWS terraform pipeline that associate to each subnet:
 
-  Route Tables: [C0 AWS Pipeline Terraform route tables](https://github.com/c0-ops/aws-concourse/blob/master/terraform/c0-aws-base/route_tables.tf)
+  Route Tables: [C0 AWS Pipeline Terraform route tables](https://github.com/pivotal-cf/aws-concourse/blob/master/terraform/route_tables.tf)
 
-  Route Table Association: [C0 AWS Pipeline Terraform route table association](https://github.com/c0-ops/aws-concourse/blob/master/terraform/c0-aws-base/route_table_associations.tf)
+  Route Table Association: [C0 AWS Pipeline Terraform route table association](https://github.com/pivotal-cf/aws-concourse/blob/master/terraform/route_table_associations.tf)
 
   * PublicSubnetRouteTable
     This routing table enables the ingress/egress routes from/to internet through internet gateway for OpsManager, NAT Gateway
@@ -85,7 +85,7 @@ Best practice PCF on AWS deployments requires 2 "Service Accounts"
 
 ##### Security Groups
 
-Review Pipeline Security Group here: [C0 AWS Pipeline Terraform Security Group Rules](https://github.com/c0-ops/aws-concourse/blob/master/terraform/c0-aws-base/security_group.tf)
+Review Pipeline Security Group here: [C0 AWS Pipeline Terraform Security Group Rules](https://github.com/pivotal-cf/aws-concourse/blob/master/terraform/security_group.tf)
 
 By default the Egress rules on all the security groups are wide open (ALL Protocol/To 0.0.0.0/0)
 
@@ -106,7 +106,7 @@ This table describes the security groups **ingress** rules:
 
 ##### Load Balancing
 
-Review Pipeline Security Group here:[C0 AWS Pipeline Terraform Load Balancers](https://github.com/c0-ops/aws-concourse/blob/master/terraform/c0-aws-base/load_balancers.tf)
+Review Pipeline Security Group here:[C0 AWS Pipeline Terraform Load Balancers](https://github.com/pivotal-cf/aws-concourse/blob/master/terraform/load_balancers.tf)
 
 PCF on AWS requires Elastic Load Balancer (ELB). It can be configured with multiple listeners to forward http/https/tcp traffics. We recommend to configure two ELBs:
 
@@ -127,5 +127,4 @@ Each ELB binds with a health check to check the health of the back end instances
 * PcfElb checks the health on gorouter port 80 with TCP protocol
 * PcfSshElb checks the health on diego-brain port 2222 with TCP protocol
 
-
-##[Pivotal Customer0 PCF on AWS Deployment Pipeline](https://github.com/c0-ops/aws-concourse/tree/master/ci)
+##[Pivotal Customer0 PCF on AWS Deployment Pipeline](https://github.com/pivotal-cf/aws-concourse/tree/master/pipeline.yml)

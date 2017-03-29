@@ -18,9 +18,10 @@
 
   ![](../static/vsphere/images/overview-2-2017.png)
 
-- [Pipeline Repo Link](https://github.com/c0-ops/vsphere-concourse) : Customer[0] Concourse Pipelines
-- [Pipeline ERT Repo Link](https://github.com/c0-ops/ert-concourse) : Customer[0] Concourse Pipelines
-- [Running Pipeline Link](https://fly.customer0.net/teams/main/pipelines/vsphere-base) : See the Running Customer[0] Concourse Pipelines
+- [Pipeline Repo Link](https://github.com/rahul-kj/vsphere-concourse)
+- [Pipeline ERT Repo Link](https://github.com/pivotal-cf/ert-concourse)
+
+The above repositories are being integrated into [pcf-pipelines](https://github.com/pivotal-cf/pcf-pipelines), but it is a work in progress.
 
 The reference approach is to create three Clusters, populate them with the Resource Pools and then deploy PCF with Pivotal Ops Manager into those pools, one pool per cluster. Every AZ in PCF maps to a resource pool in a cluster, never the cluster itself, to provide resource separation and a organizational model aligned to the installation.
 

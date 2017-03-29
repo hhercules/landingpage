@@ -23,7 +23,7 @@ Validation Key Info (October 2016)
 
 ## IaaS Overview
 
-Insert IaaS Specific Architecture Overview:![v1.0](https://github.com/c0-ops/landingpage/blob/master/static/gcp/images/PCF-GCP-RefArch-Overview.png)
+Insert IaaS Specific Architecture Overview:![v1.0](https://github.com/pivotal-cf/landingpage/blob/master/static/gcp/images/PCF-GCP-RefArch-Overview.png)
 
 
 

@@ -11,35 +11,36 @@
 
 | PCF Products Validated        | Version                   |
 | ----------------------------- |:-------------------------:|
-| PCF Ops Manager               | 1.9.latest                |
-| Elastic Runtime               | 1.9.latest                |
+| PCF Ops Manager               | 1.10.latest                |
+| Elastic Runtime               | 1.10.latest                |
 
 ### Pivotal Customer[0] Reference Architecture Overview
 
-  ![](../static/vsphere/images/overview-2-2017.png)
+  ![](../static/vsphere/images/overview-4-2017.png)
 
 - [Pipeline Repo Link](https://github.com/rahul-kj/vsphere-concourse)
 - [Pipeline ERT Repo Link](https://github.com/pivotal-cf/ert-concourse)
 
 The above repositories are being integrated into [pcf-pipelines](https://github.com/pivotal-cf/pcf-pipelines), but it is a work in progress.
 
-The reference approach is to create three Clusters, populate them with the Resource Pools and then deploy PCF with Pivotal Ops Manager into those pools, one pool per cluster. Every AZ in PCF maps to a resource pool in a cluster, never the cluster itself, to provide resource separation and a organizational model aligned to the installation.
+The reference approach is to create three Clusters, populated with three Resource Pools and then deploy PCF with Pivotal Ops Manager into those pools, one pool per cluster. Every AZ in PCF maps to a resource pool in a cluster (never the cluster itself) to provide resource separation and a organizational model aligned to the installation.
 
 Core networking is created via an NSX Edge with the following subnets:
   - Infrastructure
   - ERT (_Elastic Runtime_)
   - Service tiles (one or more)
   - Dynamic service tiles (a network managed entirely by BOSH Director)
+  - New for v1.10: IsoZone##
 
 This model is the gold standard for deploying one or more PCF installations for long term use and growth, allowing for capacity growth at the vSphere level, app capacity growth in PCF and also maximum installation security.
 
-This diagram shows two PCF installations sharing the same vSphere capacity, yet segmented from each other with Resource Pools (the dotted line rectangles). This approach can easily scale to many PCF installations on the same capacity with the assurance that each is resource protected and separate from each other. Priority can be given to one or another installation if desired thru the use of "shares" applied at the pool level ("High Shares" for the important installation, "Low Shares" for the sacrificial one(s)).
+More PCF installations can be "stacked" into this model by adding more resource pools to the existing clusters. This approach can easily scale to many PCF installations on the same capacity with the assurance that each is resource protected and separate from each other. Priority can be given to one or another installation if desired thru the use of "shares" applied at the pool level ("High Shares" for the important installation, "Low Shares" for the sacrificial one(s)).
 
 *__Compute__*:
 
 Each Cluster is populated by a minimum of three ESXi hosts, making nine hosts for each PCF installation in a stripped manner. All installations tap the capacity of the same nine hosts in an aggregated fashion. Vertical growth is accomplished thru adding more pools and PCF installations, horizontal growth is via adding more hosts to the existing clusters (in threes, one host per Cluster), from which all the installations can gain access to the added capacity.
 
-It is a VMware best practice to deploy hosts in Clusters of no less that three for vSphere HA use. vSphere DRS is a required function to enable Resource Pools and allow for automated vMotion.
+It is a VMware best practice to deploy hosts in Clusters of no less than three for vSphere HA use. vSphere DRS is a required function to enable Resource Pools and allow for automated vMotion.
 
 *__Storage__*:
 
@@ -53,25 +54,26 @@ Example (2): There are 6 datastores, "ds01" thru "ds06". Cluster 1 hosts are gra
 
 Datastore sizing is recommended at 8 TB per installation, or smaller volumes that aggregate up to this quantity. Small installations that won't have many tiles added can use less, 4 TB per PCF is reasonable. The primary consumer of storage is the NFS/WebDav blobstore.
 
-  _As of this publication (reference PCF versions above), PCF does not support the use of vSphere Storage Clusters. Datastores should be listed individually in the vSphere tile._
+  _As of this publication (reference PCF versions above), PCF does not support the use of vSphere Storage Clusters (a vSphere feature, not to be confused with VSAN). Datastores should be listed individually in the vSphere tile._
 
   _If a vSphere datastore is part of a vSphere Storage Cluster using sDRS (storage DRS), the sDRS feature must be disabled on the datastores used by PCF as s-vMotion activity will cause BOSH to malfunction as a result of renaming managed independent disks._
 
-Recommended types of storage are block-based (fiber channel or iSCSI) and file-based (NFS) over high speed carriers such as 8Gb FC or 10GigE. Redundant storage is highly recommended for the "persistent" storage type used by PCF. DASD or JBOD can be used for the "ephemeral" storage type.
+Recommended types of storage are block-based (fiber channel or iSCSI) and file-based (NFS) over high speed carriers such as 8Gb FC or 10GigE. Redundant storage is highly recommended for both "ephemeral" and "permanent" storage types used by PCF.
 
 *__Networking__*
 
-The above model employs VMware NSX SDN (software-defined networking) to provide unique benefits to the PCF installation on vSphere. Refer to subsequent chapters in this document for treatments of this approach where NSX is not used.
+The above model employs VMware NSX, a SDN (software-defined networking) to provide unique benefits to the PCF installation on vSphere. Refer to subsequent chapters in this document for treatments of this approach where NSX is not used.
 
 The use of NSX is an optional, but highly recommended, addition to the installation approach, as it adds many powerful elements:
 
-  1. Distributed firewall capability per-installation thru the built-in Edge Firewall
+  1. Distributed, hyper-local firewall capability per-installation thru the built-in Edge Firewall
   2. High capacity, resilient, distributed load balancing per-installation thru the NSX Load Balancer
-  3. Installation obfuscation thru the use of non-routed RFC-1918 networks behind the NSX Edge and the use of SNAT/DNAT connections to expose only the endpoints of Cloud Foundry that need exposure.
-  4. High repeatability of installations thru the repeat use of all network and addressing conventions on the right hand side of the diagram (the Tenant Side)
-  5. Automatic rule and ACL sharing via NSX Manager Global Ruleset
-  6. Automatic HA pairing of NSX Edges, managed by NSX Manager
-  7. Support for PCF Go Router IP membership in the NSX Edge virtual load balancer pool by the BOSH CPI (not an Ops Manager feature)
+  3. Network fencing
+  4. Element obfuscation thru the use of non-routed RFC-1918 networks behind the NSX Edge and the use of SNAT/DNAT connections to expose only the endpoints of Cloud Foundry that need exposure.
+  5. High repeatability of installations thru the repeat use of all network and addressing (network fencing)
+  6. Automatic rule and ACL sharing via NSX Manager Global Ruleset
+  7. Automatic HA pairing of NSX Edges, managed by NSX Manager
+  8. Support for PCF Go Router IP membership in the NSX Edge virtual load balancer pool by the BOSH CPI (not an Ops Manager feature)
 
 NSX DLR (Distributed Logical Router) is not used in this approach as it provides only routing services, not load balancing and firewalling.
 
@@ -87,6 +89,7 @@ Each PCF installation consumes four (or more) networks with the NSX Edge, aligne
 - "Deployment": A network with a large CIDR range exclusively used by the ERT tile to deploy app containers and related support components. Also known as "the apps wire".
 - "CF Tiles": At least one, if not more, with a large CIDR range for use with other installations hosted and managed by BOSH via Ops Manager. A simple approach is to use this network for all PCF tiles except ERT. A more involved approach would be to deploy multiple "Services-#" networks, one for each tile or one for each type of tile, say databases vs message busses and so on.
 - "Dynamic Services": A single network granted to BOSH Director for use with service tiles that require dynamic address space to deploy onto. This is the only network that will be marked as "Services" with a check box in the vSphere tile.
+- As of v1.10: "IsoZones##": A single network granted to the Isolation Zones Tile for use to isolate goRouters and Diego Cells into a new network space independent of the ERT installation.
 
 All of these networks are considered "inside" or "tenant-side" networks, and use non-routable RFC-1918 network space to make provisioning repeatable. The NSX Edge translates between the tenant and service provider side networks using SNAT and DNAT.
 
@@ -104,7 +107,7 @@ On the tenant side, each interface on the Edge that is defined will act as the I
 - "Deployment" network: 192.168.20.0/22, Gateway at .1
 - "CF Tiles" network: 192.168.24.0/22, Gateway at .1
 - "Dynamic Services" network: 192.168.28.0/22, Gateway at .1
-- _Future Use: "Services-B" network: 192.168.32.0/22, and so on..._
+- "IsoZone##" network: 192.168.32.0/22, Gateway at .1
 
 ![Network Example](../static/vsphere/images/PCF RefArch vSphere NSX v4 Edge Exploded.png)
 

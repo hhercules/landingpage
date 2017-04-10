@@ -172,6 +172,8 @@ _Navigate to Edge -> Manage –> Load Balancer -> Service Monitoring_
 
 - Create a new monitor for "http-routers", keep the defaults
 - Set the Type to "HTTP"
+- Set the Method to "GET"
+- Set the URL to "/health"
 - Create a new monitor for "tcp-routers", keep the defaults
 - Set the type to "HTTP"
 - Set the Method to "GET"

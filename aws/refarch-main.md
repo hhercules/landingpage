@@ -128,3 +128,18 @@ Each ELB binds with a health check to check the health of the back end instances
 * PcfSshElb checks the health on diego-brain port 2222 with TCP protocol
 
 ##[Pivotal Customer0 PCF on AWS Deployment Pipeline](https://github.com/pivotal-cf/aws-concourse/tree/master/pipeline.yml)
+
+## Integrate PCF with customer data center through VPN
+
+Sometimes applications in PCF need to access on premise data. The connection between AWS VPC and on premise data center is through a [VPN peering](http://docs.aws.amazon.com/AmazonVPC/latest/NetworkAdminGuide/Introduction.html). Couple of design concerns compared with non VPN peering worth to note.
+
+
+1. IP addresses design is the key
+   * It may not be realistic to ask routable multiple /22 address spaces due to IP exhaustion
+   * Using different VPC address spaces would cause snowflakes deployments and hard to automate
+   * Only make load balancer, NAT devices and ops manager routable
+   * PCF components would route egress through NAT instance
+2. Inbound traffic from Data center is through an [internal load balancer](http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-internal-load-balancers.html)
+3. Outbound traffic to Data center is through AWS NAT instances
+
+![AWS VPN Intergation](../static/aws/images/AWS_VPN/AWS_VPN.png)

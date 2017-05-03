@@ -131,15 +131,14 @@ Each ELB binds with a health check to check the health of the back end instances
 
 ## Integrate PCF with customer data center through VPN
 
-Sometimes applications in PCF need to access on premise data. The connection between AWS VPC and on premise data center is through a [VPN peering](http://docs.aws.amazon.com/AmazonVPC/latest/NetworkAdminGuide/Introduction.html). Couple of design concerns compared with non VPN peering worth to note.
+Sometimes applications on PCF need to access on-premise data. The connection between an AWS VPC and an on-premise datacenter is made through [VPN peering](http://docs.aws.amazon.com/AmazonVPC/latest/NetworkAdminGuide/Introduction.html). Couple of design concerns compared with non-VPN peering that are worth noting:
 
-
-1. IP addresses design is the key
-   * It may not be realistic to ask routable multiple /22 address spaces due to IP exhaustion
-   * Using different VPC address spaces would cause snowflakes deployments and hard to automate
-   * Only make load balancer, NAT devices and ops manager routable
-   * PCF components would route egress through NAT instance
-2. Inbound traffic from Data center is through an [internal load balancer](http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-internal-load-balancers.html)
-3. Outbound traffic to Data center is through AWS NAT instances
+1. Be thoughtful when assigning routable IP addresses
+   * It may not be realistic to ask for multiple routable /22 address spaces due to IP exhaustion
+   * Using different VPC address spaces can cause snowflakes deployments and present difficulties in automation
+   * Only make the load balancer, NAT devices and Ops Manager routable
+   * PCF components can route egress through a NAT instance, so you don't need to assign routable IPs to PCF components
+2. Inbound traffic from the datacenter should come through an [internal load balancer](http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-internal-load-balancers.html)
+3. Outbound traffic to the datacenter should go through AWS NAT instances
 
 ![AWS VPN Intergation](../static/aws/images/AWS_VPN/AWS_VPN.png)

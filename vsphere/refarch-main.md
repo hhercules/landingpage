@@ -198,6 +198,6 @@ In this approach, the architect is drawing capacity from the two sites independe
 
 One strategy here would be to effectively double the standard approach at the beginning of this material, yielding six total clusters, three from each side. While this seems like a whole lot of gear to apply to PCF, you could argue that in a BC/DR type of scenario, doubling everything is exactly the point.
 
-Another strategy is to use the Single Cluster approach from above, where you have three resource pools in one cluster per site, yielding six AZs to PCF but only using one actual cluster of capacity from each site. This approach won't scale as readily but does have the benefit of drawing capacity from only one cluster, which is east to provision with only a few hosts.
+Another strategy is to use the Single Cluster approach from above, where you have three resource pools in one cluster per site, yielding six AZs to PCF but only using one actual cluster of capacity from each site. This approach won't scale as readily but does have the benefit of drawing capacity from only one cluster, which is easy to provision with only a few hosts.
 
 Storage replication in this case is less critical as the assumption is there are enough AZs from either side to survive a failure and vSphere HA isn't needed to recover the installation.

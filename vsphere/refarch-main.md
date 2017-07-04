@@ -18,7 +18,7 @@
 
   ![](../static/vsphere/images/overview-4-2017.png)
 
-- [Pipeline Repo Link](https://github.com/rahul-kj/vsphere-concourse)
+- [Pipeline Repo Link](https://github.com/rahul-kj/concourse-vsphere)
 - [Pipeline ERT Repo Link](https://github.com/pivotal-cf/ert-concourse)
 
 The above repositories are being integrated into [pcf-pipelines](https://github.com/pivotal-cf/pcf-pipelines), but it is a work in progress.

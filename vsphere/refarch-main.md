@@ -148,7 +148,7 @@ It's still valid to deploy all the networks shown in the original design, so if 
 
 ### Reference Approach Without Three Clusters
 
-Some desire to start with PCF aligned to fewer resources than the standard (above) calls for, so the starting point for that is a single Cluster. If you are working with at least three ESXi hosts, the recommended guidance is still to setup in three Clusters, even with one host in each (such that the HA comes from the PasS, not the IaaS), but for less than that, place all available hosts into a single Cluster with DRS and HA enabled.
+Some desire to start with PCF aligned to fewer resources than the standard (above) calls for, so the starting point for that is a single Cluster. If you are working with at least three ESXi hosts, the recommended guidance is still to setup in three Clusters, even with one host in each (such that the HA comes from the PaaS, not the IaaS), but for less than that, place all available hosts into a single Cluster with DRS and HA enabled.
 
   ![PCF Single Cluster Model](../static/vsphere/images/PCF%20RefArch%20vSphere%20oneCluster.png)
 
